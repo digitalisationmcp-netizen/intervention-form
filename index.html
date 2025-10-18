@@ -349,17 +349,23 @@
       submitBtn.textContent = "⏳ Envoi en cours...";
 
       const payload = {
-        nomLogement:       document.getElementById("nomLogement").value || null,
-        nomComplet:        document.getElementById("nomComplet").value || null,
+        adresse:           document.getElementById("nomLogement").value || null,
+        nomDemandeur:      document.getElementById("nomComplet").value || null,
         dateIntervention:  document.getElementById("dateIntervention").value || null,
         urgence:           document.getElementById("urgence").value || null,
         description:       document.getElementById("description").value?.trim() || null,
-        montantFournitures: document.getElementById("montantFournitures").value || null,
         telephone:         document.getElementById("telephone").value || null,
         email:             document.getElementById("email").value || null,
+        montantFournitures: document.getElementById("montantFournitures").value || null,
         photosIntervention: await filesToBase64(document.getElementById("photosIntervention").files),
         photosBons:         await filesToBase64(document.getElementById("photosBons").files),
-        dateSubmission:     new Date().toISOString()
+        dateSubmission:    new Date().toISOString(),
+        // Champs optionnels pour compatibilité
+        categorie:         null,
+        sousCategorie:     null,
+        materielNecessaire: null,
+        materielDetails:   null,
+        notes:             null
       };
 
       try{
