@@ -6,94 +6,120 @@
   <title>Demande d’intervention</title>
   <style>
     :root{
-      --brand:#d6bf9f; /* couleur du logo */
-      --bg:#0f0f10;
-      --card:#161718;
-      --text:#e8e8ea;
-      --muted:#a7a7ad;
-      --ring:#27282b;
+      --brand:#d6bf9f;      /* sable (logo) */
+      --brand-600:#c9ad8a;
+      --ink:#2b2f33;        /* texte principal */
+      --muted:#6a7177;      /* texte secondaire */
+      --bg:#f7f6f3;         /* fond page */
+      --card:#ffffff;       /* carte/formulaire */
+      --ring:#e8e4dc;       /* bordure douce */
+      --ring-strong:#d8d1c4;
+      --success:#0f8f4b;
+      --error:#b23b3b;
     }
     *{box-sizing:border-box}
+    html,body{height:100%}
     body{
-      margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
-      background:linear-gradient(180deg,#0c0c0d, #141516 35%, #0c0c0d);
-      color:var(--text); padding:32px;
-      display:flex; justify-content:center;
+      margin:0; font:16px/1.45 Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      color:var(--ink); background:
+        radial-gradient(1200px 500px at 90% -10%, #efe8dd 0, transparent 70%),
+        radial-gradient(1200px 500px at -10% 110%, #efe8dd 0, transparent 70%),
+        var(--bg);
+      display:flex; justify-content:center; padding:20px;
     }
-    .wrap{width:100%; max-width:760px}
+    .wrap{width:100%; max-width:960px}
     .card{
-      background:var(--card); border:1px solid var(--ring);
-      border-radius:20px; padding:24px 20px; box-shadow:0 10px 30px rgba(0,0,0,.28);
+      background:var(--card); border:1px solid var(--ring); border-radius:22px;
+      box-shadow:0 10px 30px rgba(0,0,0,.06);
+      padding:22px 18px; margin:auto; overflow:hidden;
     }
-    header{display:flex; align-items:center; gap:14px; margin-bottom:18px}
-    header img{height:40px; width:auto}
-    header h1{font-size:18px; font-weight:700; margin:0}
-    p.helper{color:var(--muted); margin:0 0 18px}
-    form{display:grid; grid-template-columns:1fr 1fr; gap:16px}
-    .row-1{grid-column:span 1}
-    .row-2{grid-column:span 2}
-    label{display:block; font-size:12px; color:var(--muted); margin:0 0 6px 2px}
+    header{display:flex; align-items:center; gap:14px; padding:6px 8px 12px}
+    header img{height:42px; width:auto}
+    header h1{font-size:20px; margin:0; font-weight:800; letter-spacing:.2px}
+    p.helper{color:var(--muted); margin:6px 8px 22px}
+
+    form{display:grid; grid-template-columns:1fr; gap:16px}
+    @media (min-width:720px){
+      form{grid-template-columns:1fr 1fr}
+    }
+    .span-2{grid-column:1 / -1}
+    label{display:block; font-size:13px; color:#4b5258; margin:0 0 6px 4px; font-weight:600}
+    .req{color:#b83b3b}
+
     input, select, textarea{
-      width:100%; background:#0f1011; color:var(--text); border:1px solid var(--ring);
-      border-radius:12px; padding:12px 12px; outline:none; font-size:14px;
+      width:100%; background:#fff; color:var(--ink);
+      border:1px solid var(--ring); border-radius:12px; padding:12px 12px;
+      font-size:15px; outline:none; transition:box-shadow .2s, border-color .2s;
     }
-    input[type="file"]{padding:10px; background:#0f1011}
-    textarea{min-height:110px; resize:vertical}
+    textarea{min-height:120px; resize:vertical}
+    input[type="file"]{padding:10px; background:#fff}
+    input:focus, select:focus, textarea:focus{
+      border-color:var(--brand-600);
+      box-shadow:0 0 0 4px rgba(214,191,159,.25);
+    }
     .hint{font-size:12px; color:var(--muted); margin-top:6px}
-    .actions{display:flex; gap:10px; margin-top:14px}
+
+    .row{display:flex; gap:12px}
+    .row > *{flex:1}
+
+    .actions{display:flex; gap:10px; margin-top:6px}
     button{
-      appearance:none; border:1px solid var(--ring); background:var(--brand); color:#1a1a1a;
-      padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer;
+      appearance:none; border:1px solid var(--ring-strong);
+      background:linear-gradient(#e9dcc8, #d6bf9f);
+      color:#2b2a27; padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer;
+      transition:filter .15s, transform .02s;
     }
-    button.secondary{background:transparent; color:var(--text)}
-    .success,.error{
-      margin-top:14px; padding:12px 14px; border-radius:12px; border:1px solid var(--ring);
-      display:none;
+    button:hover{filter:brightness(1.02)}
+    button:active{transform:translateY(1px)}
+    button.secondary{background:#fff}
+
+    .note{
+      background:#f9f6ef; border:1px dashed var(--ring-strong); color:#5c5a54;
+      padding:10px 12px; border-radius:12px; font-size:13px;
     }
-    .success{background:#0d1a12; color:#b7f1c5; border-color:#153a25}
-    .error{background:#1a0d0d; color:#f4b2b2; border-color:#3f1b1b}
-    .req{color:#eaa; font-weight:700}
+
+    .alert{display:none; margin-top:10px; padding:12px 14px; border-radius:12px; border:1px solid}
+    .alert.ok{background:#f0fbf5; border-color:#bfe8cf; color:#0f6538}
+    .alert.ko{background:#fff5f5; border-color:#f0c7c7; color:#8b2a2a}
+
+    /* petits raffinements */
+    .badge{
+      display:inline-block; background:#fff7ea; color:#6c4b1a; border:1px solid #f0e2c7;
+      font-size:11px; padding:4px 8px; border-radius:999px; margin-left:6px;
+    }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
       <header>
-        <!-- Logo intégré (data URI) -->
-        <img alt="Logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAeAAAAHgCAYAAABQmD1/AAAACXBIWXMAAAsTAAALEwEAmpwYAA..." />
-        <h1>Demande d’intervention</h1>
+        <!-- Remplace /logo.png par le chemin réel -->
+        <img src="/logo.png" alt="Logo" />
+        <h1>Demande d’intervention <span class="badge">Gestion locative</span></h1>
       </header>
+
       <p class="helper">Merci de renseigner les informations. Les champs marqués <span class="req">*</span> sont obligatoires.</p>
 
       <form id="form">
-        <!-- Nom de logement (liste sans IDs) -->
-        <div class="row-1">
+        <!-- Nom de logement -->
+        <div>
           <label for="nomLogement">Nom de logement <span class="req">*</span></label>
           <select id="nomLogement" required>
             <option value="" disabled selected>Choisir…</option>
-            <option>Argane</option>
-            <option>Bensalem1</option>
-            <option>Bensalem9</option>
-            <option>Berrada</option>
-            <option>Bouznika</option>
-            <option>Daraa</option>
-            <option>Granada</option>
-            <option>Harhoura</option>
-            <option>Marbella</option>
-            <option>Melouya</option>
-            <option>Ouhoud</option>
-            <option>Sebou</option>
-            <option>Skhirat</option>
-            <option>Wifak</option>
-            <option>CFC Louise 2</option>
+            <option>Argane</option><option>Bensalem1</option><option>Bensalem9</option>
+            <option>Berrada</option><option>Bouznika</option><option>Daraa</option>
+            <option>Granada</option><option>Harhoura</option><option>Marbella</option>
+            <option>Melouya</option><option>Ouhoud</option><option>Sebou</option>
+            <option>Skhirat</option><option>Wifak</option><option>CFC Louise 2</option>
           </select>
         </div>
 
-        <!-- Nom complet (liste déroulante) -->
-        <div class="row-1">
+        <!-- Nom complet (liste) -->
+        <div>
           <label for="nomComplet">Nom complet (liste) <span class="req">*</span></label>
           <select id="nomComplet" required>
             <option value="" disabled selected>Choisir…</option>
+            <!-- Mets ici les personnes réelles -->
             <option>Driss Alami</option>
             <option>Mohamed Belhabes</option>
             <option>Technicien 1</option>
@@ -101,86 +127,78 @@
           </select>
         </div>
 
-        <!-- Date intervention -->
-        <div class="row-1">
+        <!-- Date + Urgence -->
+        <div>
           <label for="dateIntervention">Date d’intervention <span class="req">*</span></label>
           <input id="dateIntervention" type="date" required />
         </div>
-
-        <!-- Urgence -->
-        <div class="row-1">
+        <div>
           <label for="urgence">Niveau d’urgence</label>
           <select id="urgence">
             <option value="" selected>—</option>
-            <option>Faible</option>
-            <option>Moyenne</option>
-            <option>Haute</option>
+            <option>Faible</option><option>Moyenne</option><option>Haute</option>
           </select>
         </div>
 
         <!-- Description -->
-        <div class="row-2">
+        <div class="span-2">
           <label for="description">Description du problème <span class="req">*</span></label>
-          <textarea id="description" placeholder="Explique le souci, l’emplacement…"
-            required></textarea>
+          <textarea id="description" placeholder="Explique le souci, l’emplacement…" required></textarea>
         </div>
 
-        <!-- Montant des fournitures -->
-        <div class="row-1">
+        <!-- Montant & Photos -->
+        <div>
           <label for="montantFournitures">Montant des fournitures (MAD)</label>
           <input id="montantFournitures" type="number" min="0" step="0.01" placeholder="0.00" />
           <div class="hint">Laisse vide si non concerné.</div>
         </div>
-
-        <!-- Photos intervention -->
-        <div class="row-1">
+        <div>
           <label for="photosIntervention">Photos de l’intervention</label>
           <input id="photosIntervention" type="file" accept="image/*" multiple />
-          <div class="hint">Tu peux sélectionner plusieurs images.</div>
+          <div class="hint">Plusieurs images possibles.</div>
         </div>
 
-        <!-- Photos des bons -->
-        <div class="row-2">
+        <div class="span-2">
           <label for="photosBons">Photos des bons</label>
           <input id="photosBons" type="file" accept="image/*" multiple />
         </div>
 
-        <!-- Coordonnées (si tu veux les garder) -->
-        <div class="row-1">
+        <!-- Coordonnées -->
+        <div>
           <label for="telephone">Téléphone</label>
-          <input id="telephone" type="tel" placeholder="+212..." />
+          <input id="telephone" type="tel" placeholder="+212…" />
         </div>
-        <div class="row-1">
+        <div>
           <label for="email">Email</label>
           <input id="email" type="email" placeholder="nom@exemple.com" />
         </div>
 
-        <div class="row-2 actions">
+        <div class="span-2 note">Pas besoin des champs « Adresse complète » et « Quel matériel » — retirés.</div>
+
+        <div class="span-2 actions">
           <button type="submit">Envoyer</button>
           <button class="secondary" type="reset">Réinitialiser</button>
         </div>
 
-        <div id="ok" class="success">Intervention envoyée ✅</div>
-        <div id="ko" class="error">Erreur d’envoi. Réessaie ou contacte un admin.</div>
+        <div id="ok" class="alert ok">Intervention envoyée ✅</div>
+        <div id="ko" class="alert ko">Erreur d’envoi. Merci de réessayer.</div>
       </form>
     </div>
   </div>
 
   <script>
-    // === CONFIG ===
     const WEBHOOK_URL = "https://n8n.srv928014.hstgr.cloud/webhook/intervention-v1";
 
-    // Convert selected files -> base64 strings (Data URLs)
     async function filesToBase64(fileList){
       const toB64 = (file) => new Promise((resolve, reject)=>{
         const r = new FileReader();
-        r.onload = () => resolve(r.result);   // data:image/...;base64,XXXX
+        r.onload = () => resolve(r.result);
         r.onerror = reject;
         r.readAsDataURL(file);
       });
-      const arr = [];
-      for(const f of fileList || []) arr.push(await toB64(f));
-      return arr;
+      const out = [];
+      for(const f of fileList || []) out.push(await toB64(f));
+      return out;
     }
 
     const form = document.getElementById("form");
@@ -192,7 +210,6 @@
       okEl.style.display = "none";
       koEl.style.display = "none";
 
-      // Récupération des valeurs
       const payload = {
         nomLogement:       document.getElementById("nomLogement").value || null,
         nomComplet:        document.getElementById("nomComplet").value || null,
@@ -202,14 +219,11 @@
         montantFournitures: document.getElementById("montantFournitures").value || null,
         telephone:         document.getElementById("telephone").value || null,
         email:             document.getElementById("email").value || null,
-        // Fichiers encodés (base64)
         photosIntervention: await filesToBase64(document.getElementById("photosIntervention").files),
         photosBons:         await filesToBase64(document.getElementById("photosBons").files),
-        // horodatage
         dateSubmission:     new Date().toISOString()
       };
 
-      // Envoi JSON vers n8n
       try{
         const res = await fetch(WEBHOOK_URL, {
           method: "POST",
@@ -221,11 +235,10 @@
           const txt = await res.text().catch(()=> "");
           throw new Error(`HTTP ${res.status} – ${txt}`);
         }
-
+        okEl.textContent = "Intervention envoyée ✅";
         okEl.style.display = "block";
         form.reset();
       }catch(err){
-        console.error(err);
         koEl.textContent = "Erreur d’envoi : " + err.message;
         koEl.style.display = "block";
       }
